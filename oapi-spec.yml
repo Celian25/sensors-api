@@ -5,7 +5,7 @@ info:
   description: API для передачи и получения данных с сенсоров
 
 servers:
-  - url: http://localhost:8000
+  - url: https://sensors-service.duckdns.org
 
 paths:
   /send:

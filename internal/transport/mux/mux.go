@@ -19,7 +19,7 @@ func GetMux(pathToSpec string, port string, cfg *config.Server, ws *websocket.Ws
 		})
 
 		r.Get("/swagger/*", httpSwagger.Handler(
-			httpSwagger.URL(fmt.Sprintf("http://localhost:%s/openapi.yaml", port))))
+			httpSwagger.URL("/openapi.yaml")))
 	}
 
 	if cfg.Websocket {
