@@ -1,0 +1,14 @@
+version: "2"
+sql:
+  - engine: "sqlite"
+    queries: "schema/query.sql"
+    schema: "schema/schema.sql"
+    gen:
+      go:
+        package: "repository"
+        out: "internal/storage/sqlite/repository"
+#        overrides:
+#          - column: "sensor_data.timestamp"
+#            go_type:
+#              import: "time"
+#              type: "Time"

@@ -1,0 +1,12 @@
+database:
+  name: sensors
+  type: "mongo" # mongo или sqlite
+  url: "mongourl"
+server:
+  swagger: true
+  websocket: true
+  port: 8000
+devices:
+  - name: Датчик температуры
+    location: Улица
+    token: 12345679QWERTyuiop-

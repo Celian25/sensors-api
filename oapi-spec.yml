@@ -1,0 +1,160 @@
+openapi: 3.0.3
+info:
+  title: Sensor API
+  version: 1.0.0
+  description: API для передачи и получения данных с сенсоров
+
+servers:
+  - url: http://localhost:8000
+
+paths:
+  /send:
+    post:
+      summary: Отправить данные с сенсора
+      operationId: PostSend
+      security:
+        - TokenAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - temperature
+                - humidity
+              properties:
+                temperature:
+                  type: number
+                  format: float
+                  example: 23.5
+                humidity:
+                  type: number
+                  format: float
+                  example: 60.2
+      responses:
+        "200":
+          description: Данные успешно сохранены
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+                    example: "success"
+        "401":
+          description: Неавторизован
+
+  /data:
+    get:
+      summary: Поиск данных для сенсора по диапазону времени
+      operationId: GetDataSearch
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          description: Начало диапазона (ISO 8601)
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          description: Конец диапазона (ISO 8601)
+      responses:
+        "200":
+          description: Список данных за указанный период
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SensorData"
+        "400":
+          description: Некорректный формат параметров
+
+  /sensors:
+    get:
+      summary: Получить список всех сенсоров
+      security:
+        - TokenAuth: []
+      operationId: GetSensors
+      responses:
+        "200":
+          description: Список всех сенсоров
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Sensor"
+        "401":
+          description: Неавторизован
+
+
+
+components:
+  securitySchemes:
+    TokenAuth:
+      type: apiKey
+      in: header
+      name: Token
+
+  schemas:
+    SensorData:
+      type: object
+      required:
+        - sensorId
+        - temperature
+        - humidity
+        - timestamp
+      properties:
+        sensorId:
+          type: string
+          example: sensor-1
+        temperature:
+          type: number
+          format: float
+          example: 23.5
+        humidity:
+          type: number
+          format: float
+          example: 60.2
+        timestamp:
+          type: string
+          format: date-time
+          example: 2025-09-27T12:34:56Z
+    Sensor:
+      type: object
+      required:
+        - id
+        - token
+        - location
+        - name
+      properties:
+        id:
+          type: string
+          example: "00112233-4455-6677-8899-aabbccddeeff"
+        token:
+          type: string
+          example: "flkgjKGDJSF4324dkjgfd/"
+        location:
+          type: string
+          example: Улица
+        name:
+          type: string
+          example: "Сенсор-1"
