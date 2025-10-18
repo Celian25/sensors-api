@@ -67,20 +67,6 @@ func (ws *Ws) SendData(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ws *Ws) ReadData(w http.ResponseWriter, r *http.Request) {
-	token := r.Header.Get("Token")
-	if token == "" {
-		http.Error(w, "Missing Token", http.StatusUnauthorized)
-		log.Println("Missing Token")
-		return
-	}
-
-	_, ok := ws.Devices.Load(token)
-	if !ok {
-		http.Error(w, "Device not found", http.StatusUnauthorized)
-		log.Println("Device not found")
-		return
-	}
-
 	c, err := ws.Upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Printf("Error upgrading to websocket: %v", err)

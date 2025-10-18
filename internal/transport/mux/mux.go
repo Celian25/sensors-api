@@ -3,6 +3,7 @@ package mux
 import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 	"sensor-api/internal/config"
@@ -11,6 +12,9 @@ import (
 
 func GetMux(pathToSpec string, port string, cfg *config.Server, ws *websocket.Ws) *chi.Mux {
 	r := chi.NewMux()
+
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
 
 	if cfg.Swagger {
 		r.Get("/openapi.yaml", func(w http.ResponseWriter, r *http.Request) {

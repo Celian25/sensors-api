@@ -27,18 +27,6 @@ func NewServer(s *service.SensorService) *Server {
 func (s *Server) GetSensors(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	token := r.Header.Get("Token")
-	if token == "" {
-		respondError(w, http.StatusUnauthorized, "Missing Token header", nil)
-		return
-	}
-
-	_, ok := s.Devices.Load(token)
-	if !ok {
-		respondError(w, http.StatusForbidden, "unknown device", nil)
-		return
-	}
-
 	sensors, err := s.Repo.GetDevices(r.Context())
 	if err != nil {
 		respondError(w, http.StatusInternalServerError, "internal server error", err)
@@ -163,7 +151,7 @@ func (s *Server) GetDataSearch(w http.ResponseWriter, r *http.Request, params Ge
 			SensorID:    v.SensorID,
 			Temperature: v.Temperature,
 			Humidity:    v.Humidity,
-			Timestamp:   v.Timestamp.Format(time.DateOnly),
+			Timestamp:   v.Timestamp.String(),
 		}
 		items = append(items, item)
 	}

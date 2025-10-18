@@ -87,8 +87,6 @@ paths:
   /sensors:
     get:
       summary: Получить список всех сенсоров
-      security:
-        - TokenAuth: []
       operationId: GetSensors
       responses:
         "200":
