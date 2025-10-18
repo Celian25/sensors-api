@@ -5,7 +5,6 @@ import (
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"sensor-api/internal/domain"
 	"sensor-api/internal/storage/mongo/repository"
-	"time"
 )
 
 func ToDomainSensor(s repository.Sensor) domain.Sensor {
@@ -23,7 +22,7 @@ func ToDomainSensorData(sd repository.SensorData) domain.SensorData {
 		SensorID:    sd.SensorID.Hex(),
 		Temperature: sd.Temperature,
 		Humidity:    sd.Humidity,
-		Timestamp:   time.Now(),
+		Timestamp:   sd.Timestamp,
 	}
 }
 
