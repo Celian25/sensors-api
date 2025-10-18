@@ -151,7 +151,7 @@ func (s *Server) GetDataSearch(w http.ResponseWriter, r *http.Request, params Ge
 			SensorID:    v.SensorID,
 			Temperature: v.Temperature,
 			Humidity:    v.Humidity,
-			Timestamp:   v.Timestamp.String(),
+			Timestamp:   v.Timestamp.Format(time.RFC3339),
 		}
 		items = append(items, item)
 	}
